@@ -15,6 +15,7 @@ public class Tarefa implements Parcelable {
     private String descricao;
     private String timestamp;
 
+    public Tarefa(){}
     public Tarefa(String nome, String descricao, String timestamp) {
         this.nome = nome;
         this.descricao = descricao;
