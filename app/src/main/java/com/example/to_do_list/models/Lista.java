@@ -10,10 +10,10 @@ import com.example.to_do_list.models.Tarefa;
 
 import java.util.ArrayList;
 
-@Entity(tableName = "lista")
+@Entity(tableName = "listas")
 public class Lista implements Parcelable {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private Integer id;
     private String nome;
     private String timestamp;

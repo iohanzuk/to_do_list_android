@@ -1,5 +1,6 @@
 package com.example.to_do_list.adpters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.to_do_list.R;
 import com.example.to_do_list.models.Tarefa;
+import com.example.to_do_list.util.Utility;
 
 import java.util.ArrayList;
 
 public class TarefasRecyclerAdpter extends RecyclerView.Adapter<TarefasRecyclerAdpter.ViewHolder> {
+
+    private static final String TAG = "TarefaAdpter";
+
     private ArrayList<Tarefa> tarefas = new ArrayList<>();
     private TarefasRecyclerAdpter.OnTarefasListener onTarefasListener;
 
@@ -33,8 +38,17 @@ public class TarefasRecyclerAdpter extends RecyclerView.Adapter<TarefasRecyclerA
 
     @Override
     public void onBindViewHolder(@NonNull TarefasRecyclerAdpter.ViewHolder holder, int position) {
-        holder.timestamp.setText(tarefas.get(position).getTimestamp());
-        holder.nome.setText(tarefas.get(position).getNome());
+        try{
+            String month = tarefas.get(position).getTimestamp().substring(0, 2);
+            month = Utility.getMonthForNumber(month);
+            String year = tarefas.get(position).getTimestamp().substring(0, 3);
+            String timestamp = month + " " + year;
+
+            holder.timestamp.setText(timestamp);
+            holder.nome.setText(tarefas.get(position).getNome());
+        }catch (NullPointerException e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override

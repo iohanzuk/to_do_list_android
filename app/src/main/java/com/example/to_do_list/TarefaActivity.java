@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,12 +17,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.to_do_list.models.Tarefa;
+import com.example.to_do_list.persistence.Repository;
+import com.example.to_do_list.util.Utility;
 
 public class TarefaActivity extends AppCompatActivity implements
         View.OnTouchListener,
         GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener,
-        View.OnClickListener {
+        View.OnClickListener,
+        TextWatcher {
 
     private static final String TAG = "TarefaActivity";
     private static final int EDIT_TAREFA_ENABLED = 1;
@@ -34,6 +39,8 @@ public class TarefaActivity extends AppCompatActivity implements
     private RelativeLayout checkContainer, backArrowContainer;
     private ImageButton check, backArrow;
     private int modo;
+    private Repository repository;
+    private Tarefa mTarefaFinal;
 
     private boolean isNewTask;
 
@@ -49,6 +56,7 @@ public class TarefaActivity extends AppCompatActivity implements
         check = findViewById(R.id.toolbar_check);
         backArrow = findViewById(R.id.toolbar_back);
 
+        repository = new Repository(this);
         if (getIncoomingContent()) {
             setNovaTarefa();
             enableEditMode();
@@ -62,6 +70,13 @@ public class TarefaActivity extends AppCompatActivity implements
     private boolean getIncoomingContent() {
         if (getIntent().hasExtra("tarefa")) {
             tarefa = getIntent().getParcelableExtra("tarefa");
+
+            mTarefaFinal = new Tarefa();
+            mTarefaFinal.setNome(tarefa.getNome());
+            mTarefaFinal.setDescricao(tarefa.getDescricao());
+            mTarefaFinal.setTimestamp(tarefa.getTimestamp());
+            mTarefaFinal.setId(tarefa.getId());
+
             modo = EDIT_TAREFA_DISABLED;
             isNewTask = false;
             return false;
@@ -91,12 +106,30 @@ public class TarefaActivity extends AppCompatActivity implements
 
         modo = EDIT_TAREFA_DISABLED;
         disableContentIteraction();
+        String temp = lineEditText.getText().toString();
+        temp = temp.replace("\n", "");
+        temp = temp.replace(" ", "");
+        if (temp.length() > 0) {
+            mTarefaFinal.setNome(editTextToolbar.getText().toString());
+            mTarefaFinal.setDescricao(lineEditText.getText().toString());
+            mTarefaFinal.setDescricao(Utility.getCurrentTimesTamp());
+
+            if (!mTarefaFinal.getDescricao().equals(tarefa.getDescricao()) ||
+                    !mTarefaFinal.getNome().equals(tarefa.getNome())) {
+                saveChanges();
+            }
+        }
     }
 
     private void setNovaTarefa(){
+        textViewToolbar.setText("Nova Tarefa");
+        editTextToolbar.setText("Nova Tarefa");
+
         tarefa = new Tarefa();
-        textViewToolbar.setText(tarefa.getNome());
-        editTextToolbar.setText(tarefa.getDescricao());
+        mTarefaFinal = new Tarefa();
+
+        tarefa.setNome("Nova Tarefa");
+        mTarefaFinal.setNome("Nova Tarefa");
     }
 
     private void setPropriedadesTarefa() {
@@ -111,6 +144,7 @@ public class TarefaActivity extends AppCompatActivity implements
         textViewToolbar.setOnClickListener(this);
         check.setOnClickListener(this);
         backArrow.setOnClickListener(this);
+        editTextToolbar.addTextChangedListener(this);
     }
 
     private void disableContentIteraction(){
@@ -136,6 +170,22 @@ public class TarefaActivity extends AppCompatActivity implements
             view = new View(this);
         }
         imn.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void saveChanges() {
+        if(isNewTask){
+            saveNovaTarefa();
+        }else {
+            updateTarefa();
+        }
+    }
+
+    private void saveNovaTarefa() {
+       repository.insertTarefa(mTarefaFinal);
+    }
+
+    private void updateTarefa() {
+        repository.updateTarefa(mTarefaFinal);
     }
 
     @Override
@@ -228,5 +278,20 @@ public class TarefaActivity extends AppCompatActivity implements
         if (modo == EDIT_TAREFA_ENABLED) {
             enableEditMode();
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        textViewToolbar.setText(s.toString());
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }

@@ -3,18 +3,27 @@ package com.example.to_do_list.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "tarefa")
+@Entity(tableName = "tarefas")
 public class Tarefa implements Parcelable {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private Integer id;
+    @ColumnInfo(name = "lista_id")
+    private Integer listaId;
+    @ColumnInfo(name = "nome")
     private String nome;
+    @ColumnInfo(name = "descricao")
     private String descricao;
+    @ColumnInfo(name = "timestamp")
     private String timestamp;
 
+    @Ignore
     public Tarefa(){}
     public Tarefa(String nome, String descricao, String timestamp) {
         this.nome = nome;
@@ -27,6 +36,11 @@ public class Tarefa implements Parcelable {
             id = null;
         } else {
             id = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            listaId = null;
+        } else {
+            listaId = in.readInt();
         }
         nome = in.readString();
         descricao = in.readString();
@@ -77,6 +91,14 @@ public class Tarefa implements Parcelable {
         this.timestamp = timestamp;
     }
 
+    public Integer getListaId() {
+        return listaId;
+    }
+
+    public void setListaId(Integer listaId) {
+        this.listaId = listaId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -89,6 +111,12 @@ public class Tarefa implements Parcelable {
         } else {
             dest.writeByte((byte) 1);
             dest.writeInt(id);
+        }
+        if (listaId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(listaId);
         }
         dest.writeString(nome);
         dest.writeString(descricao);
