@@ -17,7 +17,7 @@ public interface TarefaDao {
     @Insert
     void insertTarefas(Tarefa... tarefas);
 
-    @Query("SELECT * FROM tarefas WHERE lista_id = :listaId")
+    @Query("SELECT * FROM tarefas WHERE listaid = :listaId")
     LiveData<List<Tarefa>> getTarefas(int listaId);
 
     @Delete

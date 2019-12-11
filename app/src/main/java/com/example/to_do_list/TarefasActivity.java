@@ -26,7 +26,7 @@ public class TarefasActivity extends AppCompatActivity implements
         TarefasRecyclerAdpter.OnTarefasListener,
         FloatingActionButton.OnClickListener {
 
-    private RecyclerView tarefasRecycleView;
+    private RecyclerView mTarefasRecycleView;
     private Lista mLista;
     private ArrayList<Tarefa> mTarefas = new ArrayList<>();
     private TarefasRecyclerAdpter tarefasRecyclerAdpter;
@@ -36,7 +36,7 @@ public class TarefasActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tarefas);
-        tarefasRecycleView = findViewById(R.id.recycleViewTarefas);
+        mTarefasRecycleView = findViewById(R.id.recycleViewTarefas);
         findViewById(R.id.fab_tarefa).setOnClickListener(this);
         repository = new Repository(this);
 
@@ -52,12 +52,12 @@ public class TarefasActivity extends AppCompatActivity implements
 
     private void initRecycleView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        tarefasRecycleView.setLayoutManager(linearLayoutManager);
+        mTarefasRecycleView.setLayoutManager(linearLayoutManager);
         VerticalSpacingItemDecorator itemDecorator = new VerticalSpacingItemDecorator(10);
-        tarefasRecycleView.addItemDecoration(itemDecorator);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(tarefasRecycleView);
+        mTarefasRecycleView.addItemDecoration(itemDecorator);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mTarefasRecycleView);
         tarefasRecyclerAdpter = new TarefasRecyclerAdpter(mTarefas, this);
-        tarefasRecycleView.setAdapter(tarefasRecyclerAdpter );
+        mTarefasRecycleView.setAdapter(tarefasRecyclerAdpter );
     }
 
     private void findTarefas(Lista lista) {

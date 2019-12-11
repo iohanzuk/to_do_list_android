@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "26a6114f0224f24028d5eba9291568df",
+    "identityHash": "869dd2329d23b5beaf334fe8ea41417b",
     "entities": [
       {
         "tableName": "tarefas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `lista_id` INTEGER, `nome` TEXT, `descricao` TEXT, `timestamp` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `listaId` INTEGER, `nome` TEXT, `descricao` TEXT, `timestamp` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -16,7 +16,7 @@
           },
           {
             "fieldPath": "listaId",
-            "columnName": "lista_id",
+            "columnName": "listaId",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -83,7 +83,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"26a6114f0224f24028d5eba9291568df\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"869dd2329d23b5beaf334fe8ea41417b\")"
     ]
   }
 }

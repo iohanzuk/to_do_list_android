@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
@@ -14,22 +13,21 @@ public class Tarefa implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;
-    @ColumnInfo(name = "lista_id")
     private Integer listaId;
-    @ColumnInfo(name = "nome")
     private String nome;
-    @ColumnInfo(name = "descricao")
     private String descricao;
-    @ColumnInfo(name = "timestamp")
     private String timestamp;
 
     @Ignore
     public Tarefa(){}
-    public Tarefa(String nome, String descricao, String timestamp) {
+
+    public Tarefa(String nome, Integer listaId, String descricao, String timestamp) {
         this.nome = nome;
+        this.listaId = listaId;
         this.descricao = descricao;
         this.timestamp = timestamp;
     }
+
 
     protected Tarefa(Parcel in) {
         if (in.readByte() == 0) {

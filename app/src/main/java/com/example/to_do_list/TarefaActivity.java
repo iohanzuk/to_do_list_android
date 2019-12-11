@@ -116,7 +116,7 @@ public class TarefaActivity extends AppCompatActivity implements
         if (temp.length() > 0) {
             mTarefaFinal.setNome(editTextToolbar.getText().toString());
             mTarefaFinal.setDescricao(lineEditText.getText().toString());
-            mTarefaFinal.setDescricao(Utility.getCurrentTimesTamp());
+            mTarefaFinal.setTimestamp(Utility.getCurrentTimesTamp());
 
             if (!mTarefaFinal.getDescricao().equals(tarefa.getDescricao()) ||
                     !mTarefaFinal.getNome().equals(tarefa.getNome())) {

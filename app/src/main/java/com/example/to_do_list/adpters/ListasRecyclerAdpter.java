@@ -40,7 +40,7 @@ public class ListasRecyclerAdpter extends RecyclerView.Adapter<ListasRecyclerAdp
         try{
             String month = listas.get(position).getTimestamp().substring(0, 2);
             month = Utility.getMonthForNumber(month);
-            String year = listas.get(position).getTimestamp().substring(0, 4);
+            String year = listas.get(position).getTimestamp().substring(3, 7);
             String timestamp = month + "\n" + year;
             holder.timestamp.setText(timestamp);
             holder.nome.setText(listas.get(position).getNome());

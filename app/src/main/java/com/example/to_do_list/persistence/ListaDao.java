@@ -20,7 +20,7 @@ public interface ListaDao {
     @Query("SELECT * FROM listas")
     LiveData<List<Lista>> getListas();
 
-    @Query("DELETE FROM tarefas WHERE lista_id = :listaId")
+    @Query("DELETE FROM tarefas WHERE listaid = :listaId")
     void deleteTarefasFromLista(int listaId);
 
     @Delete
