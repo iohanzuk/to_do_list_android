@@ -41,8 +41,8 @@ public class TarefasRecyclerAdpter extends RecyclerView.Adapter<TarefasRecyclerA
         try{
             String month = tarefas.get(position).getTimestamp().substring(0, 2);
             month = Utility.getMonthForNumber(month);
-            String year = tarefas.get(position).getTimestamp().substring(0, 3);
-            String timestamp = month + " " + year;
+            String year = tarefas.get(position).getTimestamp().substring(0, 4);
+            String timestamp = month + "\n" + year;
 
             holder.timestamp.setText(timestamp);
             holder.nome.setText(tarefas.get(position).getNome());

@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.to_do_list.adpters.ListasRecyclerAdpter;
 import com.example.to_do_list.models.Lista;
 import com.example.to_do_list.persistence.Repository;
+import com.example.to_do_list.util.Utility;
 import com.example.to_do_list.util.VerticalSpacingItemDecorator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -40,7 +42,7 @@ public class ListasActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerView = findViewById(R.id.recycleView);
-        findViewById(R.id.fab_lista);
+        findViewById(R.id.fab_lista).setOnClickListener(this);
         repository = new Repository(this);
         initRecycleView();
         findListas();
@@ -83,16 +85,37 @@ public class ListasActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-//        View mView = getLayoutInflater().inflate(R.layout.dialog_lista, null);
-//        EditText mNomeLista = (EditText) mView.findViewById(R.id.cad_lista_nome);
-//        Button mCriar = (Button) mView.findViewById(R.id.button_cad_lista);
+        View mView = getLayoutInflater().inflate(R.layout.dialog_lista, null);
+        final EditText mNomeLista = (EditText) mView.findViewById(R.id.cad_lista_nome);
+        Button mCriar = (Button) mView.findViewById(R.id.button_cad_lista);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        mCriar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mNomeLista.getText().toString().isEmpty()){
+                    Lista listaInsert = new Lista(mNomeLista.getText().toString(), Utility.getCurrentTimesTamp());
+                    repository.insertLista(listaInsert);
+                    mListas.add(listaInsert);
+                    listasRecyclerAdpter.notifyDataSetChanged();
+                    Toast.makeText(ListasActivity.this, "Lista Criada", Toast.LENGTH_SHORT).show();
+                    dialog.hide();
+                }else {
+                    Toast.makeText(ListasActivity.this, "Preencha o Nome", Toast.LENGTH_SHORT).show();
+                    dialog.hide();
+                }
+            }
+        });
     }
 
     private void deleteLista(Lista lista) {
         mListas.remove(lista);
-        listasRecyclerAdpter.notifyDataSetChanged();
-        repository.deleteLista(lista);
         repository.deleteTarefaFromLista(lista.getId());
+        repository.deleteLista(lista);
+        listasRecyclerAdpter.notifyDataSetChanged();
     }
 
     private ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {

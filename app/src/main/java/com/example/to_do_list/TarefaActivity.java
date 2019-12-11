@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.to_do_list.models.Lista;
 import com.example.to_do_list.models.Tarefa;
 import com.example.to_do_list.persistence.Repository;
 import com.example.to_do_list.util.Utility;
@@ -35,6 +36,7 @@ public class TarefaActivity extends AppCompatActivity implements
     private EditText editTextToolbar;
     private TextView textViewToolbar;
     private Tarefa tarefa;
+    private Lista mLista;
     private GestureDetector gestureDetector;
     private RelativeLayout checkContainer, backArrowContainer;
     private ImageButton check, backArrow;
@@ -57,6 +59,8 @@ public class TarefaActivity extends AppCompatActivity implements
         backArrow = findViewById(R.id.toolbar_back);
 
         repository = new Repository(this);
+        mLista = getIntent().getParcelableExtra("lista");
+
         if (getIncoomingContent()) {
             setNovaTarefa();
             enableEditMode();
@@ -70,9 +74,9 @@ public class TarefaActivity extends AppCompatActivity implements
     private boolean getIncoomingContent() {
         if (getIntent().hasExtra("tarefa")) {
             tarefa = getIntent().getParcelableExtra("tarefa");
-
             mTarefaFinal = new Tarefa();
             mTarefaFinal.setNome(tarefa.getNome());
+            mTarefaFinal.setListaId(mLista.getId());
             mTarefaFinal.setDescricao(tarefa.getDescricao());
             mTarefaFinal.setTimestamp(tarefa.getTimestamp());
             mTarefaFinal.setId(tarefa.getId());
@@ -130,12 +134,19 @@ public class TarefaActivity extends AppCompatActivity implements
 
         tarefa.setNome("Nova Tarefa");
         mTarefaFinal.setNome("Nova Tarefa");
+        mTarefaFinal.setListaId(mLista.getId());
     }
 
     private void setPropriedadesTarefa() {
         textViewToolbar.setText(tarefa.getNome());
         editTextToolbar.setText(tarefa.getNome());
         lineEditText.setText(tarefa.getDescricao());
+
+        mTarefaFinal.setId(tarefa.getId());
+        mTarefaFinal.setNome(tarefa.getNome());
+        mTarefaFinal.setDescricao(tarefa.getDescricao());
+        mTarefaFinal.setListaId(tarefa.getListaId());
+        mTarefaFinal.setTimestamp(tarefa.getTimestamp());
     }
 
     private void setLinesters(){

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">To Do List</string>
     <string name="action_settings">Settings</string>
+    <string name="nova_lista">Nova Lista</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="cadastro_de_lista">Cadastro de Lista</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.to_do_list.adpters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.to_do_list.R;
 import com.example.to_do_list.models.Lista;
+import com.example.to_do_list.util.Utility;
 
 import java.util.ArrayList;
 
 public class ListasRecyclerAdpter extends RecyclerView.Adapter<ListasRecyclerAdpter.ViewHolder> {
 
+    private static final String TAG = "ListaAdpter";
     private ArrayList<Lista> listas = new ArrayList<>();
     private OnListaListener onListaListener;
 
@@ -34,8 +37,16 @@ public class ListasRecyclerAdpter extends RecyclerView.Adapter<ListasRecyclerAdp
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.timestamp.setText(listas.get(position).getTimestamp());
-        holder.nome.setText(listas.get(position).getNome());
+        try{
+            String month = listas.get(position).getTimestamp().substring(0, 2);
+            month = Utility.getMonthForNumber(month);
+            String year = listas.get(position).getTimestamp().substring(0, 4);
+            String timestamp = month + "\n" + year;
+            holder.timestamp.setText(timestamp);
+            holder.nome.setText(listas.get(position).getNome());
+        }catch (NullPointerException e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override

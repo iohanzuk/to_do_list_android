@@ -20,7 +20,7 @@
         android:layout_weight="75"
         android:lines="1"
         android:padding="10dp"
-        android:text="This some title"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="23sp" />
 
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="20"
         android:padding="10dp"
-        android:text="Dec 2018"
+        android:text=""
         android:textSize="17sp" />
 
 </LinearLayout>

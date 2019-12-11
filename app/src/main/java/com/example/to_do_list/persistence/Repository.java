@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.to_do_list.async.ListaDeleteAsync;
 import com.example.to_do_list.async.ListaDeleteTarefasAsync;
 import com.example.to_do_list.async.ListaInsertAsync;
 import com.example.to_do_list.async.ListaUpdateAsync;
@@ -55,7 +56,6 @@ public class Repository {
     }
 
     public void deleteLista(Lista lista) {
-        LiveData tarefas = toDoListDatabase.getTarefaDao().getTarefas(lista.getId());
-        toDoListDatabase.getListaDao().delete(lista);
+        new ListaDeleteAsync(toDoListDatabase.getListaDao()).execute(lista);
     }
 }

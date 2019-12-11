@@ -27,7 +27,7 @@ public class TarefasActivity extends AppCompatActivity implements
         FloatingActionButton.OnClickListener {
 
     private RecyclerView tarefasRecycleView;
-
+    private Lista mLista;
     private ArrayList<Tarefa> mTarefas = new ArrayList<>();
     private TarefasRecyclerAdpter tarefasRecyclerAdpter;
     private Repository repository;
@@ -41,11 +41,11 @@ public class TarefasActivity extends AppCompatActivity implements
         repository = new Repository(this);
 
         if(getIntent().hasExtra("lista")) {
-            Lista lista = getIntent().getParcelableExtra("lista");
+            mLista = getIntent().getParcelableExtra("lista");
             initRecycleView();
-            findTarefas(lista);
+            findTarefas(mLista);
             setSupportActionBar((Toolbar) findViewById(R.id.lista_toolbar));
-            setTitle(lista.getNome());
+            setTitle(mLista.getNome());
         }
 
     }
@@ -79,12 +79,14 @@ public class TarefasActivity extends AppCompatActivity implements
     public void onTarefaClick(int position) {
         Intent intent = new Intent(this, TarefaActivity.class);
         intent.putExtra("tarefa", mTarefas.get(position));
+        intent.putExtra("lista", mLista);
         startActivity(intent);
     }
 
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(this, TarefaActivity.class);
+        intent.putExtra("lista", mLista);
         startActivity(intent);
     }
 
